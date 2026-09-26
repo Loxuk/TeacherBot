@@ -114,21 +114,32 @@ async def request_a_teacher(interaction: discord.Interaction):
     )
 
 # ==========================================
-# START BOT (Wymuszony tryb asynchroniczny dla Python 3.14)
+# START BOT (Zabezpieczenie sieciowe dla hostingu cloud)
 # ==========================================
+import http.server
+import threading
+
+def run_dummy_server():
+    # Hostingi często wymagają, aby aplikacja "web" zajęła port (domyślnie 8080)
+    port = int(os.getenv("PORT", 8080))
+    server_address = ('', port)
+    httpd = http.server.HTTPServer(server_address, http.server.SimpleHTTPRequestHandler)
+    print(f"Dummy web server active on port {port}")
+    httpd.serve_forever()
 
 async def main():
     if not DISCORD_TOKEN:
         print("BŁĄD: Zmienna DISCORD_TOKEN jest pusta w panelu hostingu!")
         return
     
-    # Inicjalizujemy sesję bota bezpośrednio wewnątrz pętli asyncio
+    # Uruchamiamy serwer HTTP w osobnym wątku, aby zadowolić system hostingu
+    threading.Thread(target=run_dummy_server, daemon=True).start()
+    
     async with bot:
         await bot.start(DISCORD_TOKEN)
 
 if __name__ == "__main__":
     try:
-        # Pobieramy lub tworzymy nową pętlę zdarzeń, zapobiegając zamykaniu procesu
         loop = asyncio.get_event_loop()
         loop.run_until_complete(main())
     except KeyboardInterrupt:
