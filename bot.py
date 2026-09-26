@@ -114,13 +114,23 @@ async def request_a_teacher(interaction: discord.Interaction):
     )
 
 # ==========================================
-# START BOT
+# START BOT (Wymuszony tryb asynchroniczny dla Python 3.14)
 # ==========================================
 
-if __name__ == "__main__":
+async def main():
     if not DISCORD_TOKEN:
         print("BŁĄD: Zmienna DISCORD_TOKEN jest pusta w panelu hostingu!")
-    else:
-        # Klasyczne uruchomienie - discord.py sam zarządza pętlą w Pythonie 3.14
-        bot.run(DISCORD_TOKEN)
+        return
+    
+    # Inicjalizujemy sesję bota bezpośrednio wewnątrz pętli asyncio
+    async with bot:
+        await bot.start(DISCORD_TOKEN)
+
+if __name__ == "__main__":
+    try:
+        # Pobieramy lub tworzymy nową pętlę zdarzeń, zapobiegając zamykaniu procesu
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(main())
+    except KeyboardInterrupt:
+        print("Bot został wyłączony.")
 
