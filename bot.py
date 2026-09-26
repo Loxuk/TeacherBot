@@ -3,14 +3,9 @@ import asyncio
 import discord
 from discord.ext import commands
 
-# USUNIĘTO load_dotenv() - hosting sam przekazuje tę zmienną do systemu
-
 # ==========================================
 # SETTINGS
 # ==========================================
-
-# Pobieramy dokładnie tak, jak wykrył to panel dchost
-DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 
 SERVER_ID = 1515774982154879147
 TEACHER_ROLE_ID = 1550582807036825771
@@ -118,15 +113,17 @@ async def request_a_teacher(interaction: discord.Interaction):
 # ==========================================
 
 async def main():
-    if not DISCORD_TOKEN:
+    # Pobieranie tokenu wewnątrz funkcji uruchamiającej (naprawia błąd hostingu)
+    token = os.getenv('DISCORD_TOKEN')
+    
+    if not token:
         print("BŁĄD: Zmienna DISCORD_TOKEN jest pusta w panelu hostingu!")
         return
     
     # Czyszczenie i start klienta bezpośrednio w pętli asyncio
     async with bot:
-        await bot.start(DISCORD_TOKEN)
+        await bot.start(token)
 
 if __name__ == "__main__":
-    # Oficjalna i bezpieczna metoda dla Pythona 3.14 w Dockerze
+    # Oficjalna i bezpieczna metoda dla Pythona w Dockerze
     asyncio.run(main())
-
