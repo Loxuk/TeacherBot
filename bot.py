@@ -115,18 +115,13 @@ async def request_a_teacher(interaction: discord.Interaction):
     )
 
 # ==========================================
-# START BOT (Zoptymalizowane pod Python 3.14)
+# START BOT
 # ==========================================
 
-async def main():
-    if not DISCORD_TOKEN:
-        raise ValueError("Błąd: Zmienna DISCORD_TOKEN jest pusta w panelu hostingu!")
-    
-    async with bot:
-        await bot.start(DISCORD_TOKEN)
-
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        print("Bot został wyłączony.")
+    if not DISCORD_TOKEN:
+        print("BŁĄD: Zmienna DISCORD_TOKEN jest pusta w panelu hostingu!")
+    else:
+        # Klasyczne uruchomienie - discord.py sam zarządza pętlą w Pythonie 3.14
+        bot.run(DISCORD_TOKEN)
+
