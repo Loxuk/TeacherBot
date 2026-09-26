@@ -1,3 +1,2 @@
---no-cache-dir
 discord.py
 aiohttp
