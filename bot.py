@@ -1,16 +1,15 @@
 import os
 import asyncio
-from dotenv import load_dotenv
 import discord
 from discord.ext import commands
 
-load_dotenv()
+# USUNIĘTO load_dotenv() - hosting sam przekazuje tę zmienną do systemu
 
 # ==========================================
 # SETTINGS
 # ==========================================
 
-# Poprawiono na WIELKIE LITERY, aby pasowało do końcówki kodu
+# Pobieramy dokładnie tak, jak wykrył to panel dchost
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 
 SERVER_ID = 1515774982154879147
